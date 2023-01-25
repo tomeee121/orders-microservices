@@ -1,4 +1,4 @@
 package TBorowski.fraud;
 
-public record FraudCheckResponse(boolean isFraudster) {
+public record FraudCheckResponse(Boolean isFraudster) {
 }
