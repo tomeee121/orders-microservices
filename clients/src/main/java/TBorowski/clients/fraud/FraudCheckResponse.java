@@ -1,4 +1,4 @@
-package TBorowski.customer;
+package TBorowski.clients.fraud;
 
 public record FraudCheckResponse(boolean isFraudster) {
 }
