@@ -1,5 +1,6 @@
 package TBorowski.customer;
 
+import TBorowski.amqp.RabbitMQMessageProducer;
 import TBorowski.clients.fraud.FraudCheckResponse;
 import TBorowski.clients.fraud.FraudClient;
 import TBorowski.clients.notification.FeignNotification;
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     private final CustomerRepository repository;
     private final FraudClient fraudClient;
-    private final FeignNotification feignNotification;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
+//    private final FeignNotification feignNotification;
 
 
     public void register(CustomerRegistratonRequest request) {
@@ -30,6 +32,10 @@ public class CustomerService {
         }
 
         TBorowski.clients.notification.NotificationRequest requestToNotificate = new TBorowski.clients.notification.NotificationRequest(customer.getId(), customer.getEmail(), String.format("Hi, welcome to %s site. Your order has been placed!", "TB"));
-        feignNotification.sendNotification(requestToNotificate);
+//        feignNotification.sendNotification(requestToNotificate);
+        rabbitMQMessageProducer.publish(
+                requestToNotificate,
+                "internal.exchange",
+                "internal.notification.routing-key");
     }
 }
