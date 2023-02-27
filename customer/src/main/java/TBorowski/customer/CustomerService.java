@@ -3,7 +3,6 @@ package TBorowski.customer;
 import TBorowski.amqp.RabbitMQMessageProducer;
 import TBorowski.clients.fraud.FraudCheckResponse;
 import TBorowski.clients.fraud.FraudClient;
-import TBorowski.clients.notification.FeignNotification;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
