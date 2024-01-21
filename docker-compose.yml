@@ -1,11 +1,13 @@
 services:
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: tb
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
+      ALLOW_SAVE_TUNNEL_PASSWORD: true
+      ALLOW_SAVE_PASSWORD: true
     volumes:
       - postgres:/data/postgres
     ports:
@@ -20,6 +22,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: 'False'
+      PGADMIN_CONFIG_WTF_CSRF_ENABLED: 'False'
     volumes:
       - pgadmin:/var/lib/pgadmin
     ports:
@@ -42,29 +46,29 @@ services:
       - "15672:15672"
     networks:
       - spring
-  eureka-server:
-    image: tomeklfc111/eureka-server:latest
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
-  apigw:
-    image: tomeklfc111/apigw:latest
-    container_name: apigw
-    ports:
-      - "8084:8084"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
-      - eureka-server
+#  eureka-server:
+#    image: tomeklfc111/eureka-server:latest
+#    container_name: eureka-server
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
+#  apigw:
+#    image: tomeklfc111/apigw:latest
+#    container_name: apigw
+#    ports:
+#      - "8084:8084"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
+#      - eureka-server
   customer:
     image: tomeklfc111/customer:latest
     container_name: customer
@@ -77,7 +81,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
   fraud:
@@ -92,7 +95,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
   notification:
@@ -107,7 +109,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
 

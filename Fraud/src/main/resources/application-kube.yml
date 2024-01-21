@@ -1,15 +1,15 @@
 server:
-  port: 8080
+  port: 8083
 spring:
   application:
-    name: customer
+    name: fraud
   datasource:
-    username: 'tb'
-    password: 'password'
-    url: jdbc:postgresql://postgres:5432/customer
+    username: tb
+    password: password
+    url: jdbc:postgresql://postgres:5432/fraud
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -22,14 +22,10 @@ spring:
 
 eureka:
   instance:
-    hostname: customer
+    hostname: fraud
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
       defaultZone: http://eureka-server:8761/eureka
     enabled: false
-config:
-  connectTimeout: 5000
-  readTimeout: 5000
-

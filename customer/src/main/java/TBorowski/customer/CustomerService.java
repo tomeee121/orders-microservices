@@ -6,6 +6,13 @@ import TBorowski.clients.fraud.FraudClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class CustomerService {
@@ -13,6 +20,7 @@ public class CustomerService {
     private final FraudClient fraudClient;
     private final RabbitMQMessageProducer rabbitMQMessageProducer;
 //    private final FeignNotification feignNotification;
+
 
 
     public void register(CustomerRegistratonRequest request) {
